@@ -1,13 +1,15 @@
+import { Ionicons } from "@expo/vector-icons";
+import { useState } from "react";
 import {
+  Animated as RNAnimated,
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  View,
   Text,
   TouchableOpacity,
+  View,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { useState } from "react";
+import { Swipeable } from "react-native-gesture-handler";
 
 interface Task {
   id: string;
@@ -100,6 +102,41 @@ export default function TodayScreen() {
     );
   };
 
+  const deleteTask = (id: string) => {
+    setTasks(tasks.filter((task) => task.id !== id));
+  };
+
+  const renderRightActions = (
+    task: Task,
+    progress: RNAnimated.AnimatedInterpolation<number>
+  ) => {
+    const trans = progress.interpolate({
+      inputRange: [0, 1],
+      outputRange: [100, 0],
+    });
+
+    return (
+      <View style={styles.rightActionContainer}>
+        <RNAnimated.View
+          style={[
+            styles.rightAction,
+            {
+              transform: [{ translateX: trans }],
+            },
+          ]}
+        >
+          <TouchableOpacity
+            style={styles.deleteButton}
+            onPress={() => deleteTask(task.id)}
+          >
+            <Ionicons name="trash-outline" size={24} color="#FFF" />
+            <Text style={styles.deleteText}>Delete</Text>
+          </TouchableOpacity>
+        </RNAnimated.View>
+      </View>
+    );
+  };
+
   const groupedTasks = tasks.reduce((acc, task) => {
     if (!acc[task.date]) {
       acc[task.date] = [];
@@ -127,40 +164,47 @@ export default function TodayScreen() {
           <View key={date} style={styles.dateGroup}>
             <Text style={styles.subtitle}>{date}</Text>
             {dateTasks.map((task) => (
-              <TouchableOpacity
+              <Swipeable
                 key={task.id}
-                style={styles.taskItem}
-                onPress={() => toggleTask(task.id)}
+                renderRightActions={(progress) =>
+                  renderRightActions(task, progress)
+                }
               >
-                <View style={styles.taskItemContent}>
-                  <View style={styles.taskItemContentLeft}>
-                    <View
-                      style={[
-                        styles.checkbox,
-                        task.completed && styles.checkboxCompleted,
-                        task.color && {
-                          borderColor: task.color,
-                          backgroundColor: task.color,
-                        },
-                      ]}
-                    >
-                      {task.completed && (
-                        <Ionicons name="checkmark" size={16} color="#FFF" />
-                      )}
+                <TouchableOpacity
+                  key={task.id}
+                  style={styles.taskItem}
+                  onPress={() => toggleTask(task.id)}
+                >
+                  <View style={styles.taskItemContent}>
+                    <View style={styles.taskItemContentLeft}>
+                      <View
+                        style={[
+                          styles.checkbox,
+                          task.completed && styles.checkboxCompleted,
+                          task.color && {
+                            borderColor: task.color,
+                            backgroundColor: task.color,
+                          },
+                        ]}
+                      >
+                        {task.completed && (
+                          <Ionicons name="checkmark" size={16} color="#FFF" />
+                        )}
+                      </View>
+                      <Text
+                        style={[
+                          styles.taskText,
+                          task.completed && styles.taskTextCompleted,
+                        ]}
+                      >
+                        {task.text}
+                      </Text>
                     </View>
-                    <Text
-                      style={[
-                        styles.taskText,
-                        task.completed && styles.taskTextCompleted,
-                      ]}
-                    >
-                      {task.text}
-                    </Text>
-                  </View>
 
-                  <Text style={styles.taskLabel}>{task.label}</Text>
-                </View>
-              </TouchableOpacity>
+                    <Text style={styles.taskLabel}>{task.label}</Text>
+                  </View>
+                </TouchableOpacity>
+              </Swipeable>
             ))}
           </View>
         ))}
@@ -214,6 +258,7 @@ const styles = StyleSheet.create({
   taskItemContentLeft: {
     flexDirection: "row",
     alignItems: "center",
+    // backgroundColor: "red",
   },
   checkbox: {
     width: 20,
@@ -223,7 +268,10 @@ const styles = StyleSheet.create({
     borderColor: "gray",
     marginStart: 20,
   },
-  checkboxCompleted: {},
+  checkboxCompleted: {
+    borderColor: "#000",
+    backgroundColor: "#000",
+  },
   taskText: {
     color: "#000",
     fontSize: 16,
@@ -234,5 +282,31 @@ const styles = StyleSheet.create({
     textAlign: "right",
     color: "#666666",
     fontSize: 12,
+  },
+  rightActionContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "flex-end",
+    width: "100%",
+  },
+  rightAction: {
+    backgroundColor: "#FF3B30",
+    justifyContent: "center",
+    alignItems: "center",
+    width: 100,
+    height: "100%",
+  },
+  deleteButton: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    // paddingHorizontal: 20,
+    width: "100%",
+  },
+  deleteText: {
+    color: "#FFF",
+    fontSize: 12,
+    marginTop: 4,
+    fontWeight: "600",
   },
 });
