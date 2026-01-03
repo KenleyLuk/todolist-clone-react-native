@@ -1,13 +1,13 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import {
-    Animated as RNAnimated,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Animated as RNAnimated,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
 
@@ -55,41 +55,6 @@ export default function TodayScreen() {
       text: "Call the doctor",
       completed: false,
       date: "2026-01-05",
-      label: "Medical",
-    },
-    {
-      id: "6",
-      text: "Buy a new phone",
-      completed: false,
-      date: "2026-01-06",
-      label: "Shopping",
-    },
-    {
-      id: "7",
-      text: "Finish the project",
-      completed: false,
-      date: "2026-01-07",
-      label: "Work",
-    },
-    {
-      id: "8",
-      text: "Read the book",
-      completed: false,
-      date: "2026-01-08",
-      label: "Reading",
-    },
-    {
-      id: "9",
-      text: "Exercise",
-      completed: false,
-      date: "2026-01-09",
-      label: "Health",
-    },
-    {
-      id: "10",
-      text: "Call the doctor",
-      completed: false,
-      date: "2026-01-10",
       label: "Medical",
     },
   ]);

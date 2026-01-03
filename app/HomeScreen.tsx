@@ -1,8 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
-import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 // import { Image as RNImage } from "expo-image";
+import { Image } from "expo-image";
 
 export default function HomeScreen() {
     const router = useRouter();
@@ -25,7 +25,7 @@ export default function HomeScreen() {
 
         {/* Center Logo */}
         <Image 
-          source={require("@/assets/images/icon.png")} 
+          source={require("@/assets/images/todolist.svg")} 
           style={styles.logo} 
           contentFit="contain"
         />
