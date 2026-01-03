@@ -1,15 +1,14 @@
-import { SafeAreaView, ScrollView } from "react-native";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
-import {useRouter } from "expo-router";
+import { useRouter } from "expo-router";
+import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 // import { Image as RNImage } from "expo-image";
 
 export default function HomeScreen() {
     const router = useRouter();
     
     const handleLogin = () => {
-        router.push("/TodayScreen");
+        router.push("/(tabs)/today");
     };
 
   return (
